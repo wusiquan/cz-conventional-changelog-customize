@@ -45,6 +45,18 @@ module.exports = function(options) {
     };
   });
 
+  const referenceActions = [
+    'close',
+    'closes',
+    'closed',
+    'fix',
+    'fixes',
+    'fixed',
+    'resolve',
+    'resolves',
+    'resolved'
+  ]
+
   return {
     // When a user runs `git cz`, prompter will
     // be executed. We pass you cz, which currently
@@ -178,11 +190,20 @@ module.exports = function(options) {
         {
           type: 'input',
           name: 'issues',
-          message: 'Add issue references (e.g. "fix #123", "re #123".):\n',
+          message: 'Add jira reference (e.g. "fix #GMPQA-123", "close #GMPQA-456".):\n',
           when: function(answers) {
             return answers.isIssueAffected;
           },
-          default: options.defaultIssues ? options.defaultIssues : undefined
+          default: options.defaultIssues ? options.defaultIssues : undefined,
+          validate: function(issues) {
+            const joinedKeywords = referenceActions.join('|')
+            let reg = new RegExp('(' + joinedKeywords + ')' + ' \\#[A-Z]+\\-\\d+')
+
+            if (!issues.match(reg)) {
+              return 'jira reference format: fix #GMPQA-123'
+            }
+            return true
+          }
         }
       ]).then(function(answers) {
         var wrapOptions = {
