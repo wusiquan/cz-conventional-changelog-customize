@@ -26,7 +26,7 @@ var options = {
 };
 
 // commitlint exports `default` with tsc build from v9.0.0
-if (typeof commitlintLoad !== 'function' && commitlintLoad.default === 'function') {
+if (typeof commitlintLoad !== 'function' && typeof commitlintLoad.default === 'function') {
   commitlintLoad = commitlintLoad.default
 }
 
