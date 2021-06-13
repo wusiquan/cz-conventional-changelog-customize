@@ -25,6 +25,11 @@ var options = {
     100
 };
 
+// commitlint exports `default` with tsc build from v9.0.0
+if (typeof commitlintLoad !== 'function' && commitlintLoad.default === 'function') {
+  commitlintLoad = commitlintLoad.default
+}
+
 commitlintLoad().then(function(clConfig) {
   if (clConfig.rules) {
     var maxHeaderLengthRule = clConfig.rules['header-max-length'];
