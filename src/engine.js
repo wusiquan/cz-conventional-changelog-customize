@@ -190,17 +190,17 @@ module.exports = function(options) {
         {
           type: 'input',
           name: 'issues',
-          message: 'Add jira reference (e.g. "fix #GMPQA-123", "close #GMPQA-456".):\n',
+          message: 'Add jira reference (e.g. "fix #123", "close #456".):\n',
           when: function(answers) {
             return answers.isIssueAffected;
           },
           default: options.defaultIssues ? options.defaultIssues : undefined,
           validate: function(issues) {
             const joinedKeywords = referenceActions.join('|')
-            let reg = new RegExp('(' + joinedKeywords + ')' + ' \\#[A-Z]+\\-\\d+')
+            let reg = new RegExp('(' + joinedKeywords + ')' + ' \\#\\d+')
 
             if (!issues.match(reg)) {
-              return 'jira reference format: fix #GMPQA-123'
+              return 'jira reference format: fix #123'
             }
             return true
           }
